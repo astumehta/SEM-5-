@@ -18,17 +18,12 @@ c=0
 
 
 def relax(u,v):
-
-    # Update the distance to vertex v if a shorter path is found via u.
     if(dist[v]>dist[u]+graph[u][v]):
         dist[v]=dist[u]+graph[u][v]
         parent[v]=u
 
 
 def BellmanFord():
-    # Implementation of the Bellman-Ford algorithm. Returns True if there is no negative weight cycle, False otherwise.
-
-    # Relax edges n-1 times
     for _ in range(n-1):
         for u in range(0,n):
             for v in range(0,n):
@@ -36,11 +31,10 @@ def BellmanFord():
                     relax(u,v)
 
     
-    # Check for negative weight cycles
     for u in range(n):
         for v in range(n):
             if graph[u][v] != 0 and dist[v] > dist[u] + graph[u][v]:
-                return False  # Negative weight cycle detected
+                return False 
     return True
 
 

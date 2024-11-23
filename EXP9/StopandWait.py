@@ -1,41 +1,35 @@
 import time
 import random
-class StopAndWait:
-    def _init_(self, total_frames):
-        self.total_frames = total_frames  
-        self.current_frame = 0           
-        self.timeout = 2                 
 
-    def send_frame(self, frame):
-        print(f"Sending frame {frame}...")
-        time.sleep(0.5) 
+total_frames = 5
+timeout = 2
+current_frame = 0
 
-    def receive_ack(self, frame):
-        ack = random.choice([True, False])  
-        if ack:
-            print(f"Acknowledgment received for frame {frame}.")
-        else:
-            print(f"Acknowledgment lost for frame {frame}.")
-        return ack
+def send_frame(frame):
+    print(f"Frame {frame} sent.")
+    time.sleep(1)
 
-    def simulate(self):
-        while self.current_frame < self.total_frames:
-            self.send_frame(self.current_frame)
+def ack_receive(frame):
+    choice = random.choice([True, False])
+    if choice:
+        print(f"Acknowledgement received for Frame {frame}.")
+    else:
+        print(f"No acknowledgement for Frame {frame}")
+    return choice
 
-            start_time = time.time()
-            ack_received = False
+while current_frame < total_frames:
+    send_frame(current_frame)
 
-            while time.time() - start_time < self.timeout:
-                ack_received = self.receive_ack(self.current_frame)
-                if ack_received:
-                    break
+    t = time.time()
+    ack = False
 
-            if ack_received:
-                self.current_frame += 1
-            else:
-                print(f"Timeout! Retransmitting frame {self.current_frame}...")
+    while time.time() - t < timeout:
+        ack = ack_receive(current_frame)
+        break
 
-        print("All frames sent and acknowledged successfully!")
+    if ack:
+        current_frame += 1
+    else:
+        print(f"Timeout! Retransmitting frame {current_frame}...")
 
-protocol = StopAndWait(total_frames=5) 
-protocol.simulate()
+print("All frames sent and acknowledged successfully!")

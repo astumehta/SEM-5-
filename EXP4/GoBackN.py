@@ -2,8 +2,10 @@ import time
 import random
 
 window_size = 4
+
 total_frames = 10
 sent_frames = 0
+
 ack_received = 0
 
 while ack_received < total_frames:
