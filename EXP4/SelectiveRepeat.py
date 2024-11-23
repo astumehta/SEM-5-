@@ -1,45 +1,35 @@
 import time
 import random
 
-class SelectiveRepeat:
-    def __init__(self, window_size, total_frames):
-        self.window_size = window_size
-        self.total_frames = total_frames
-        self.sent_frames = [None] * total_frames
-        self.ack_received = [False] * total_frames
-        self.current_frame = 0
+def SR(window_size, total_frames):
 
-    def send_frame(self, frame_num):
-        if self.sent_frames[frame_num] is None:
-            print(f"Sending frame {frame_num}")
-            self.sent_frames[frame_num] = True
-            time.sleep(1)
+    sent_frames = [False] * total_frames
+    ack_recieved = [False] * total_frames
+    window_start = 0
 
-    def receive_ack(self, frame_num):
-        ack = random.choice([True, False])
-        if ack:
-            print(f"ACK received for frame {frame_num}")
-            self.ack_received[frame_num] = True
-        else:
-            print(f"NACK for frame {frame_num}")
+    while not all(ack_recieved):
+        for i in range(window_start, min(window_start + window_size, total_frames)):
+            if not sent_frames[i]:
+                print(f"Sending frame {i}")
+                sent_frames[i] = True
+                time.sleep(1)
+        
+        for i in range(window_start, min(window_start + window_size, total_frames)):
+            if not ack_recieved[i]:
+                ack = random.random() < 0.7
+                if ack:
+                    print(f"Received ACK for frame {i}")
+                    ack_recieved[i] = True
+                    time.sleep(1) 
+                else:
+                    print(f"Frame {i} lost. Will retransmit later.")
+                    sent_frames[i] = False
+                    time.sleep(1)
+        while window_start < total_frames and ack_recieved[window_start]:
+            window_start += 1
+        
+    print(f"All {total_frames} frames sent and acknowledged")
 
-    def send_frames(self):
-        while not all(self.ack_received):
-            for i in range(self.window_size):
-                frame_num = (self.current_frame + i) % self.total_frames
-                if not self.ack_received[frame_num]:
-                    self.send_frame(frame_num)
-
-            for i in range(self.window_size):
-                frame_num = (self.current_frame + i) % self.total_frames
-                if not self.ack_received[frame_num]:
-                    self.receive_ack(frame_num)
-
-            for i in range(self.window_size):
-                frame_num = (self.current_frame + i) % self.total_frames
-                if self.ack_received[frame_num]:
-                    self.current_frame = (self.current_frame + 1) % self.total_frames
-                    break
-
-sr = SelectiveRepeat(window_size=4, total_frames=10)
-sr.send_frames()
+window_size = 4
+total_frames = 10
+SR(window_size,total_frames)

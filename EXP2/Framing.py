@@ -2,7 +2,6 @@ def character_count():
 
     frame=int(input("Enter no. of frames:"))
     final=''
-
     for i in range(0,frame):
         data=input(f"Enter string {i+1}:")
         char_count=str(len(data)+1)+data
@@ -14,8 +13,10 @@ def character_count():
 def byte_stuffing():
     
     message=input("Enter the message:")
+
     start=input("Enter start flag:")
     end=input("Enter end flag:")
+
     escape=input("Enter the escape character:")
     final=""
 
@@ -38,7 +39,6 @@ def bit_stuffing():
             c += 1
         else:
             c = 0 
-
         if c == 6:
             data.insert(i, '0')             
             c = 0                           

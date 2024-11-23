@@ -1,59 +1,41 @@
-import random
 import time
+import random
+class StopAndWait:
+    def _init_(self, total_frames):
+        self.total_frames = total_frames  
+        self.current_frame = 0           
+        self.timeout = 2                 
 
-def unreliable_network(packet, loss_prob=0.3, corruption_prob=0.2):
-    if packet and random.random() < loss_prob:
-        return None
-    if packet and random.random() < corruption_prob:
-        packet['corrupt'] = True
-    return packet
+    def send_frame(self, frame):
+        print(f"Sending frame {frame}...")
+        time.sleep(0.5) 
 
-class Sender:
-    def __init__(self):
-        self.frame_num = 0
+    def receive_ack(self, frame):
+        ack = random.choice([True, False])  
+        if ack:
+            print(f"Acknowledgment received for frame {frame}.")
+        else:
+            print(f"Acknowledgment lost for frame {frame}.")
+        return ack
 
-    def send(self):
-        print(f"Sending Frame {self.frame_num}")
-        return {'frame_num': self.frame_num}
+    def simulate(self):
+        while self.current_frame < self.total_frames:
+            self.send_frame(self.current_frame)
 
-    def receive_ack(self, ack):
-        if not ack:
-            print(f"Timeout or lost ACK for Frame {self.frame_num}. Retransmitting...\n")
-            return False
-        if ack.get('corrupt'):
-            print(f"Corruption detected in ACK for Frame {self.frame_num}. Retransmitting...\n")
-            return False
-        if ack.get('ack_num') == self.frame_num:
-            print(f"Acknowledgment received for Frame {self.frame_num}\n")
-            self.frame_num += 1
-            return True
+            start_time = time.time()
+            ack_received = False
 
-class Receiver:
-    def __init__(self):
-        self.expected_frame_num = 0
+            while time.time() - start_time < self.timeout:
+                ack_received = self.receive_ack(self.current_frame)
+                if ack_received:
+                    break
 
-    def receive(self, packet):
-        if not packet:
-            print(f"Frame lost during transmission!\n")
-            return None
-        if packet.get('corrupt'):
-            print(f"Corruption detected in Frame {packet['frame_num']}. Discarding packet.\n")
-            return None
-        if packet['frame_num'] == self.expected_frame_num:
-            print(f"Frame {packet['frame_num']} received successfully.\n")
-            ack = {'ack_num': self.expected_frame_num}
-            self.expected_frame_num += 1
-            return ack
+            if ack_received:
+                self.current_frame += 1
+            else:
+                print(f"Timeout! Retransmitting frame {self.current_frame}...")
 
-def stop_and_wait_arq(sender, receiver, frame_count):
-    for _ in range(frame_count):
-        while True:
-            packet = unreliable_network(sender.send())
-            ack = unreliable_network(receiver.receive(packet))
-            if sender.receive_ack(ack):
-                break
-            time.sleep(1)
-    print("All frames sent successfully.")
+        print("All frames sent and acknowledged successfully!")
 
-if __name__ == "__main__":
-    stop_and_wait_arq(Sender(), Receiver(), frame_count=5)
+protocol = StopAndWait(total_frames=5) 
+protocol.simulate()
