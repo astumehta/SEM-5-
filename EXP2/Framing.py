@@ -33,7 +33,6 @@ def bit_stuffing():
     data = list(input("Enter data: "))
     c = 0
     i = 0
-
     while i < len(data):
         if data[i] == '1':  
             c += 1
