@@ -1,19 +1,20 @@
-graph=[
-    [0,7,9,0,0,4],
-    [7,0,10,15,0,0],
-    [9,10,0,11,0,2],
-    [0,15,11,0,6,0],
-    [0,0,0,6,0,9],
-    [4,0,2,0,9,0]
+graph = [
+    [0, 7, 9, 0, 0, 4],
+    [7, 0, 10, 15, 0, 0],
+    [9, 10, 0, 11, 0, 2],
+    [0, 15, 11, 0, 6, 0],
+    [0, 0, 0, 6, 0, 9],
+    [4, 0, 2, 0, 9, 0]
 ]
 
-n=len(graph)
-dist=n*[9999]
-parent=n*[-1]
-visited=n*[0]
-source=0
+n = 6
 
-dist[source]=0
+dist = [9999] * n
+parent = [-1] * n
+visited = [0] * n
+
+source = 0
+dist[source] = 0
 
 def extract_min():
     return min((dist[i], i) for i in range(n) if not visited[i])[1]
@@ -23,16 +24,13 @@ def relax(u, v):
         dist[v] = dist[u] + graph[u][v]
         parent[v] = u
 
-def Dikstra():
-    for i in range(0,n):
-        u=extract_min()
+for _ in range(n):
+    u = extract_min()
+    for v in range(n):
+        if graph[u][v] != 0 and not visited[v]:
+            relax(u, v)
+    visited[u] = 1
 
-        for j in range(0,n):
-            if(graph[u][j]!=0 and visited[j]!=1):
-                relax(u,j)
-        visited[u]=1
-
-Dikstra()
-
-print(dist)
-print(parent)
+print(f"Shortest distances from source {source}: {dist}")
+parent = [p + 1 if p != -1 else -1 for p in parent]
+print(f"Parent nodes: {parent}")
