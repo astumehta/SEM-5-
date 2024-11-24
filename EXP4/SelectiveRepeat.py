@@ -7,7 +7,6 @@ total_frames = 10
 sent_frames = [False] * total_frames
 ack_received = [False] * total_frames
 
-
 window_start = 0
 
 while not all(ack_received):

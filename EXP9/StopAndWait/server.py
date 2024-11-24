@@ -15,15 +15,12 @@ print(f"connected by {address}")
 def generate_ack(conn):
     while True:
         data=conn.recv(1024)
-        
         if not data:
             break
         received_data=data.decode()
         time.sleep(2)
         print(f"the data which is received is: {received_data}")
-
         if received_data=='end':
-            print("the client ended the communicaton")
             break
         ack=f"sending the acknowledgement of: {received_data}"
         conn.sendall(ack.encode())

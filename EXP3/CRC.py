@@ -1,52 +1,43 @@
-def xor(a,b):
-    c=[]
-    for i,j in zip(a,b):
-        if (i=='1' and j=='0' or i=='0' and j=='1'):
-            c.append('1')
-        else:
-            c.append('0')
-    return c
+def crc(data, divisor):
+    n = len(divisor)
+    temp = data + '0' * (n - 1)  # Append zeros 
+    temp = list(temp)
+    divisor = list(divisor)
+    for i in range(len(data)):
+        if temp[i] == '1':
+            for j in range(n):
+                temp[i + j] = str(int(temp[i + j]) ^ int(divisor[j]))
+    
+    remainder = ''.join(temp[-(n - 1):]) 
+    return remainder
 
-def division(divisor,dividend):
-    n=len(divisor)
-    quotient=[]
-    current=dividend[:n]
-    for i in range(len(dividend)-n+1):
-        if(current[0]=='1'):
-            quotient.append('1')
-            current=xor(divisor,current)
-        else:
-            quotient.append('0')
-            current=xor(['0']*n,current)
-        if i+n<len(dividend):
-            current.append(dividend[i+n])
-        current=current[1:]
-    remainder=current
-    return quotient,remainder
 
-def encode(data,divisor):
-    n=len(divisor)-1
-    padded_data=data+['0']*n
-    quotient,remainder=division(divisor,padded_data)
-    transmitted_data=data+remainder
-    return transmitted_data
+def crc2(received_data, divisor):
+    n = len(divisor)
+    temp = list(received_data)  # Dont append zeros
+    divisor = list(divisor)
+    for i in range(len(received_data) - n + 1):
+        if temp[i] == '1':
+            for j in range(n):
+                temp[i + j] = str(int(temp[i + j]) ^ int(divisor[j]))
+    
+    remainder = ''.join(temp[-(n - 1):]) 
+    return remainder
+#both are same functions except for appending zeros part
+#Sender Side
+data = input("Enter data to be sent: ")
+key = input("Enter key: ")
 
-def decode(received_data,divisor):
-    quotient,remainder=division(divisor,received_data)
-    if all(bit=='0' for bit in remainder):
-        print("right message received")
-    else:
-        print("wrong message is received")
-        print(f"remainder{''.join(remainder)}")
 
-def crc():
-    data=list(input("enter the data in binary: "))
-    divisor=list(input("enter the divisor: ").lstrip('0'))
+checksum = crc(data, key)
+sent_data = data + checksum
+print(f"Sent data: {sent_data}")
 
-    transmitted_data=encode(data,divisor)
-    print(f"the transmitted data is: {''.join(transmitted_data)}")
+#Receiver side
+received_data = input("Enter received data: ")
+remainder = crc2(received_data, key)
 
-    received_data=list(input("enter the received data: "))
-    decode(received_data,divisor)
-
-crc() 
+if int(remainder) == 0:
+    print("Data received without errors.")
+else:
+    print(f"Error detected in received data. Remainder: {remainder}")
