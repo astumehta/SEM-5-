@@ -31,27 +31,25 @@ def byte_stuffing():
 
 
 def bit_stuffing():
-    data = list(input("Enter data: "))
-    c = 0
-    i = 0
-    while i < len(data):
-        if data[i] == '1':  
-            c += 1
+    msg=input("Enter data to be sent")
+    c=0
+    final=''
+    for i in msg:
+        if(i=='1'):
+            c+=1
         else:
-            c = 0 
-        if c == 6:
-            data.insert(i, '0')             
-            c = 0                           
-            i += 1                          
-        i += 1                              
-
-    return ''.join(data)                    
+            c=0
+        final+=i
+        if(c==5):
+            final+='0'
+            c=0
+    print(final)                    
 
 
 
-print("character count:")
+print("character c:")
 transmitted_message_character_count=character_count()
-print("transmitted message character count:"+transmitted_message_character_count)
+print("transmitted message character c:"+transmitted_message_character_count)
 
 
 print("byte stuffing:")

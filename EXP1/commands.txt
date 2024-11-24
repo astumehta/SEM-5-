@@ -37,3 +37,4 @@
     - Displays or modifies the system's routing table. Used to set up static routes or view the paths that packets take to reach different networks.
 
 These commands are foundational for network troubleshooting and management in different operating systems. Let me know if you'd like examples of how to use any specific command!
+
