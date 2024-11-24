@@ -15,6 +15,7 @@ print(f"connected by {address}")
 def generate_ack(conn):
     while True:
         data=conn.recv(1024)
+        
         if not data:
             break
         received_data=data.decode()
