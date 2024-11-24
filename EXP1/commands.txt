@@ -1,0 +1,39 @@
+
+1. ifconfig/ipconfig:  
+   - ifconfig: A Linux/Unix command to view or configure network interfaces.  
+   - ipconfig: A Windows command to view and manage IP address configurations of the system.
+
+2. ping:  
+   - Tests the connectivity between the host and a target device using ICMP (Internet Control Message Protocol) packets. It measures round-trip time and packet loss.
+
+3. nslookup:  
+   - A diagnostic tool for querying DNS (Domain Name System) to obtain domain name or IP address mappings.
+
+4. hostname:  
+   - Displays or sets the name of the host/computer on the network.
+
+5. netstat:  
+   - Displays active network connections, routing tables, and network interface statistics. Useful for monitoring network activity.
+
+6. nbtstat:  
+   - A Windows command for troubleshooting NetBIOS name resolution issues and viewing active NetBIOS sessions.
+
+7. net:  
+   - A Windows command for managing network resources, such as viewing shared files, starting/stopping services, or managing user accounts (`net use`, `net start`, etc.).
+
+8. tracert:  
+   - Tracks the route packets take to reach a destination host by displaying each hop along the path. Known as `traceroute` in Linux/Unix.
+
+9. arp:  
+   - Displays or modifies the ARP (Address Resolution Protocol) table, which maps IP addresses to MAC addresses.
+
+10. getmac:  
+    - Displays the MAC (Media Access Control) addresses of network adapters on the system.
+
+11. Path ping:  
+    - Combines `ping` and `tracert` functionalities. It checks connectivity at every hop along the route to a destination and measures network latency at each point.
+
+12. route:  
+    - Displays or modifies the system's routing table. Used to set up static routes or view the paths that packets take to reach different networks.
+
+These commands are foundational for network troubleshooting and management in different operating systems. Let me know if you'd like examples of how to use any specific command!

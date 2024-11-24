@@ -1,3 +1,4 @@
+#5 bit data aaya toh 4 parity le lena baaki same karo aage
 array = [None] * 7
 data = input("Enter 4-bit data to send: ")
 
