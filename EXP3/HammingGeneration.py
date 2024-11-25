@@ -5,10 +5,10 @@ data = input("Enter 4-bit data to send: ")
 if len(data) != 4:
     print("Error")
 else:
-    array[0] = int(data[0])  
-    array[1] = int(data[1])  
-    array[2] = int(data[2])
-    array[4] = int(data[3])
+    array[0] = int(data[0])#position D7
+    array[1] = int(data[1])#position D6  
+    array[2] = int(data[2])#position D5
+    array[4] = int(data[3])#position D3
 
     def iseven(sum):
         if sum % 2 == 0:

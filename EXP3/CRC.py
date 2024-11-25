@@ -11,7 +11,6 @@ def crc(data, divisor):
     remainder = ''.join(temp[-(n - 1):]) 
     return remainder
 
-
 def crc2(received_data, divisor):
     n = len(divisor)
     temp = list(received_data)  # Dont append zeros
@@ -24,10 +23,10 @@ def crc2(received_data, divisor):
     remainder = ''.join(temp[-(n - 1):]) 
     return remainder
 #both are same functions except for appending zeros part
+
 #Sender Side
 data = input("Enter data to be sent: ")
 key = input("Enter key: ")
-
 
 checksum = crc(data, key)
 sent_data = data + checksum
